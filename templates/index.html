@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Spam Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+        .center-box {
+            background: #fff;
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 18px 0;
+            border-radius: 6px;
+            border: 1px solid #bbb;
+            font-size: 1em;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #3a8dde;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 18px;
+            text-align: center;
+            font-weight: bold;
+            color: #222;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-box">
+        <h2>Email Spam Detection</h2>
+        <form id="spamForm">
+            <input type="text" id="messageInput" placeholder="Enter your message here..." required>
+            <button type="submit">Check</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('spamForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const message = document.getElementById('messageInput').value;
+            fetch('/api/data', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({text: message})
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = data.result;
+            })
+            .catch(() => {
+                document.getElementById('result').innerText = "Error: Could not get prediction.";
+            });
+        });
+    </script>
+</body>
+</html>
